@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#D9D9D9"
+    android:padding="24dp">
+
+    <!-- Título -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear Cuenta"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#F26A4B"
+        android:gravity="center"
+        android:layout_marginTop="30dp"/>
+
+    <!-- Nombres -->
+    <EditText
+        android:id="@+id/editNombre"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg_campo"
+        android:hint="Nombres"
+        android:paddingStart="16dp"/>
+
+    <!-- Apellidos -->
+    <EditText
+        android:id="@+id/editApellidos"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_campo"
+        android:hint="Apellidos"
+        android:paddingStart="16dp"/>
+
+    <!-- Correo -->
+    <EditText
+        android:id="@+id/editCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_campo"
+        android:hint="Correo"
+        android:inputType="textEmailAddress"
+        android:paddingStart="16dp"/>
+
+    <!-- Contraseña -->
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_campo"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"/>
+
+    <!-- Repetir contraseña -->
+    <EditText
+        android:id="@+id/editRepetirPassword"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_campo"
+        android:hint="Repetir Contraseña"
+        android:inputType="textPassword"
+        android:paddingStart="16dp"/>
+
+    <!-- Check términos -->
+    <CheckBox
+        android:id="@+id/checkTerminos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Acepto los términos y condiciones"/>
+
+    <!-- Botón Registro -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonRegistrar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="30dp"
+        android:text="Registrarse"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="#F26A4B"
+        app:cornerRadius="30dp"/>
+
+    <!-- Volver a login -->
+    <TextView
+        android:id="@+id/textVolverLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Volver a login"
+        android:textColor="#F26A4B"
+        android:textSize="16sp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

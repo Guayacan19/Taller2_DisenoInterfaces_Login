@@ -12,6 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Taller2_fabian">
         <activity
+            android:name=".registro"
+            android:exported="false" />
+        <activity
+            android:name=".Registro"
+            android:exported="false"
+            android:label="@string/title_activity_registro"
+            android:theme="@style/Theme.Taller2_fabian" />
+        <activity
             android:name=".loguin"
             android:exported="false" />
         <activity

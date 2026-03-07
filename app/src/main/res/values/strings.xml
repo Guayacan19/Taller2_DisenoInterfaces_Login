@@ -4,5 +4,6 @@
     <string name="registro_texto">
         ¿No tienes cuenta? <font color="#F26A4B"><b>Regístrate</b></font>
     </string>
+    <string name="title_activity_registro">Registro</string>
 
 </resources>
