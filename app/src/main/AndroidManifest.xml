@@ -11,29 +11,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Taller2_fabian">
+
+        <!-- SPLASH  -->
         <activity
-            android:name=".registro"
-            android:exported="false" />
-        <activity
-            android:name=".Registro"
-            android:exported="false"
-            android:label="@string/title_activity_registro"
-            android:theme="@style/Theme.Taller2_fabian" />
-        <activity
-            android:name=".loguin"
-            android:exported="false" />
-        <activity
-            android:name=".Bienvenido"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".iu.inicio2.SplashActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <!-- BIENVENIDO -->
+        <activity
+            android:name=".iu.inicio2.BienvenidoActivity"
+            android:exported="false" />
+
+        <!-- LOGIN -->
+        <activity
+            android:name=".iu.autch.LoginActivity"
+            android:exported="false" />
+
+        <!-- REGISTRO -->
+        <activity
+            android:name=".iu.autch.RegistroActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".iu.main.MainActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

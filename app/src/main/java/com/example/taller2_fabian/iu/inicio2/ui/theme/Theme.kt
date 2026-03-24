@@ -1,4 +1,4 @@
-package com.example.taller2_fabian.ui.theme
+package com.example.taller2_fabian.iu.inicio2.ui.theme
 
 import android.app.Activity
 import android.os.Build
