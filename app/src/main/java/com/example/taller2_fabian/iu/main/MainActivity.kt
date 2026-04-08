@@ -8,6 +8,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.taller2_fabian.R
+import com.example.taller2_fabian.iu.main.admin.AdminFragment
+import com.example.taller2_fabian.iu.main.admin.UsuariosFragment
+import com.example.taller2_fabian.iu.main.perfil.PerfilFragment
+import com.example.taller2_fabian.iu.main.productos.Carritoragment
+import com.example.taller2_fabian.iu.main.productos.CatalogoFragment
+import com.example.taller2_fabian.iu.main.productos.FavoritosFragment
+import com.example.taller2_fabian.iu.main.productos.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
@@ -23,14 +30,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        val btnMenu = findViewById<ImageView>(R.id.btnMenu)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
-        val navView = findViewById<NavigationView>(R.id.nav_view)
 
-        // Botón menú
-        btnMenu.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_menu)
+        val navView = findViewById<NavigationView>(R.id.nav_view)
 
         // Drawer toggle
         val toggle = ActionBarDrawerToggle(
@@ -43,5 +45,36 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        cargarFragmnet(HomeFragment())
+        bottomNav.selectedItemId = R.id.nav_home
+
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> cargarFragmnet(HomeFragment())
+                R.id.nav_catalogo -> cargarFragmnet(CatalogoFragment())
+                R.id.nav_carrito -> cargarFragmnet(Carritoragment())
+                R.id.nav_perfil -> cargarFragmnet(PerfilFragment())
+            }
+            true
+        }
+
+        navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_favoritos -> cargarFragmnet(FavoritosFragment())
+                R.id.nav_admin -> cargarFragmnet(AdminFragment())
+                R.id.nav_usuarios -> cargarFragmnet(UsuariosFragment())
+            }
+            drawerLayout.closeDrawers()
+            true
+        }
+
+            private fun cargarFragmnet(fragment: Fragment) {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit()
+            }
+
+        }
     }
 }

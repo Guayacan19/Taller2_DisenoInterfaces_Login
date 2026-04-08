@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.taller2_fabian.R
 import com.example.taller2_fabian.iu.autch.RegistroActivity
+import com.example.taller2_fabian.iu.main.MainActivity
+import android.widget.Button
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,6 +23,15 @@ class LoginActivity : AppCompatActivity() {
         registrate.setOnClickListener {
             val intent = Intent(this, RegistroActivity::class.java)
             startActivity(intent)
+
+        }
+
+            // BOTÓN CONTINUAR
+            val btnContinuar = findViewById<Button>(R.id.btnIngresar)
+
+            btnContinuar.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
-}
