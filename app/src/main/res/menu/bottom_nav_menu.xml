@@ -19,5 +19,9 @@
         android:id="@+id/nav_carrito"
         android:title="Carrito"
         />
+    <item
+        android:id="@+id/nav_perfil"
+        android:title="Perfil"/>
+
 
 </menu>

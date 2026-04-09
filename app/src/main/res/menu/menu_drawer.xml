@@ -16,4 +16,16 @@
         android:id="@+id/nav_carrito"
         android:title="Carrito"/>
 
+    <item
+        android:id="@+id/nav_admin"
+        android:title="Admin"/>
+
+    <item
+        android:id="@+id/nav_usuarios"
+        android:title="Usuarios"/>
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:title="Perfil"/>
+
 </menu>

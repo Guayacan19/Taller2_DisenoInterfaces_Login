@@ -1,12 +1,11 @@
 package com.example.taller2_fabian.iu.main
 
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.example.taller2_fabian.R
 import com.example.taller2_fabian.iu.main.admin.AdminFragment
 import com.example.taller2_fabian.iu.main.admin.UsuariosFragment
@@ -28,13 +27,13 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         drawerLayout = findViewById(R.id.drawer_layout)
 
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav_menu)
         val navView = findViewById<NavigationView>(R.id.nav_view)
 
-        // Drawer toggle
         val toggle = ActionBarDrawerToggle(
             this,
             drawerLayout,
@@ -55,26 +54,57 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_catalogo -> cargarFragmnet(CatalogoFragment())
                 R.id.nav_carrito -> cargarFragmnet(Carritoragment())
                 R.id.nav_perfil -> cargarFragmnet(PerfilFragment())
+                R.id.nav_favoritos -> cargarFragmnet(FavoritosFragment())
             }
             true
         }
 
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_favoritos -> cargarFragmnet(FavoritosFragment())
-                R.id.nav_admin -> cargarFragmnet(AdminFragment())
-                R.id.nav_usuarios -> cargarFragmnet(UsuariosFragment())
+
+                R.id.nav_home -> {
+                    cargarFragmnet(HomeFragment())
+                    bottomNav.selectedItemId = R.id.nav_home
+                }
+
+                R.id.nav_catalogo -> {
+                    cargarFragmnet(CatalogoFragment())
+                    bottomNav.selectedItemId = R.id.nav_catalogo
+                }
+
+                R.id.nav_favoritos -> {
+                    cargarFragmnet(FavoritosFragment())
+                    bottomNav.selectedItemId = R.id.nav_favoritos
+                }
+
+                R.id.nav_carrito -> {
+                    cargarFragmnet(Carritoragment())
+                    bottomNav.selectedItemId = R.id.nav_carrito
+                }
+
+                R.id.nav_perfil -> {
+                    cargarFragmnet(PerfilFragment())
+                    bottomNav.selectedItemId = R.id.nav_perfil
+                }
+
+                R.id.nav_admin -> {
+                    cargarFragmnet(AdminFragment())
+                }
+
+                R.id.nav_usuarios -> {
+                    cargarFragmnet(UsuariosFragment())
+                }
             }
+
             drawerLayout.closeDrawers()
             true
         }
+    }
 
-            private fun cargarFragmnet(fragment: Fragment) {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit()
-            }
 
-        }
+    private fun cargarFragmnet(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }
