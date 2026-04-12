@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.taller2_fabian.R
 import com.example.taller2_fabian.iu.main.admin.AdminFragment
 import com.example.taller2_fabian.iu.main.admin.UsuariosFragment
+import com.example.taller2_fabian.iu.main.perfil.EditarPerfilFragment
 import com.example.taller2_fabian.iu.main.perfil.PerfilFragment
 import com.example.taller2_fabian.iu.main.productos.Carritoragment
 import com.example.taller2_fabian.iu.main.productos.CatalogoFragment
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_carrito -> cargarFragmnet(Carritoragment())
                 R.id.nav_perfil -> cargarFragmnet(PerfilFragment())
                 R.id.nav_favoritos -> cargarFragmnet(FavoritosFragment())
+                R.id.nav_perfil -> cargarFragmnet(EditarPerfilFragment())
             }
             true
         }
