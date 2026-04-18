@@ -142,6 +142,15 @@
         app:iconPadding="8dp"
         app:iconTint="@null" />
 
+    <TextView
+        android:id="@+id/txtHuella"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingresar con huella"
+        android:textColor="#F26A4B"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"/>
+
     <!-- Registrarse -->
     <TextView
         android:id="@+id/txtRegistrate"

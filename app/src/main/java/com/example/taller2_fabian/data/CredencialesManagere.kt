@@ -13,12 +13,12 @@ object CredencialesManagere {
             .edit()
             .putString(KEY_CORREO, correo)
             .putString(KEY_CONTRASENA, contrasena)
-            .putBoolean(KEY_HUELLA, true)
+            .putBoolean(KEY_HUELLA, huellaActiva)
             .apply()
     }
     fun huellaActiva(context: Context): Boolean =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getBoolean(KEY_HUELLA, false)
+            .getBoolean(KEY_HUELLA, true)
 
     fun limpiarCredenciales(context: Context) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

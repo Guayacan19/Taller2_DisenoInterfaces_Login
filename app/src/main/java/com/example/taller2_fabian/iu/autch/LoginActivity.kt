@@ -2,135 +2,154 @@ package com.example.taller2_fabian.iu.autch
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.taller2_fabian.R
-import com.example.taller2_fabian.iu.autch.RegistroActivity
+import com.example.taller2_fabian.SupabaseClient
+import com.example.taller2_fabian.data.CredencialesManagere
 import com.example.taller2_fabian.iu.main.MainActivity
-import android.widget.Button
-import android.widget.LinearLayout
-
-private lateinit var tvRegistrate: TextView
-private lateinit var tvRecuperarContrasena: TextView
-private lateinit var tvIngresarConGoogle: LinearLayout
-private lateinit var tvIngresarConHuella: TextView
+import io.github.jan.supabase.auth.auth
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
+
+    private lateinit var etCorreo: EditText
+    private lateinit var etContrasena: EditText
+    private lateinit var btnInicioSesion: Button
+    private lateinit var tvRegistrate: TextView
+    private lateinit var tvRecuperarContrasena: TextView
+    private lateinit var btnGoogle: Button
+    private lateinit var tvHuella: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_loguin)
 
-        tvIngresarConHuella = findViewById(R.id.in_huella)
 
-        // Inicio de sesion con huella
-        TvIngresarConGoogle.setOnclickListener {
+        etCorreo = findViewById(R.id.editUsuario)
+        etContrasena = findViewById(R.id.editContrasena)
+        btnInicioSesion = findViewById(R.id.btnIngresar)
+        tvRegistrate = findViewById(R.id.txtRegistrate)
+        tvRecuperarContrasena = findViewById(R.id.txtRecuperarContrasena)
+        btnGoogle = findViewById(R.id.btnGoogle)
+        tvHuella = findViewById(R.id.txtHuella)
 
-            mostrarDialogHuella()
 
 
-
+        tvRegistrate.setOnClickListener {
+            startActivity(Intent(this, RegistroActivity::class.java))
         }
 
 
-
-        val rootView = findViewById<ScrollView>(id = R.id.main)
-        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
-            val bottomPadding = maxOf(systemBars.bottom, imeInsets.bottom)
-
-            v.setPadding(
-                systemBars.left,
-                systemBars.top,
-                systemBars.right,
-                bottomPadding
-            )
-            insets
-        }
-
-        etCorreo = findViewById(R.id.in_correo)
-        etContrasena = findViewById(R.id.in_contrasena)
-        btnInicioSesion = findViewById(R.id.btn_inicio_sesion)
-        tvRegistrate = findViewById(R.id.in_tv_registrate)
-        tvRecuperarContrasena = findViewById(R.id.in_recuperar_contrasena)
-        tvIngresarConGoogle = findViewById(R.id.btn_google)
-
-        // TEXTO REGISTRATE
-        val registrate = findViewById<TextView>(R.id.txtRegistrate)
-
-        registrate.setOnClickListener {
-            val intent = Intent(this, RegistroActivity::class.java)
-            startActivity(intent)
-
-        }
-
-        // Inicio de sesión con información de Supabase
         btnInicioSesion.setOnClickListener {
-            inicarSesion()
+            iniciarSesion()
         }
 
-// Inicio de sesión con google
-        tvIngresarConGoogle.setOnClickListener {
+
+        btnGoogle.setOnClickListener {
             iniciarSesionConGoogle()
         }
 
-            btnContinuar.setOnClickListener {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
+
+        tvHuella.setOnClickListener {
+            mostrarDialogHuella()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        configurarVisibilidadHuella()
+    }
+
+    private fun configurarVisibilidadHuella() {
+        val huellaActiva = CredencialesManagere.huellaActiva(this)
+
+        val biometricManager = BiometricManager.from(this)
+        val disponible = biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
+
+        tvHuella.visibility = if (huellaActiva && disponible) View.VISIBLE else View.GONE
+    }
+
+    private fun iniciarSesion() {
+        val correo = etCorreo.text.toString().trim()
+        val contrasena = etContrasena.text.toString().trim()
+
+        if (correo.isEmpty() || contrasena.isEmpty()) {
+            Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
+            return
         }
 
-    private fun inicarSesion(){}
+        lifecycleScope.launch {
+            try {
+                SupabaseClient.client.auth.signInWith(io.github.jan.supabase.auth.providers.builtin.Email) {
+                    email = correo
+                    password = contrasena
+                }
 
-    private  fun iniciarSesionConGoogle(){}
+                Toast.makeText(this@LoginActivity, "Login exitoso", Toast.LENGTH_SHORT).show()
+
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+
+                CredencialesManagere.guardarCredenciales(this@LoginActivity, correo, contrasena, true)
+
+            } catch (e: Exception) {
+                Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun iniciarSesionConGoogle() {
+
+    }
 
     private fun mostrarDialogHuella() {
         val executor = ContextCompat.getMainExecutor(this)
-        val biometricPrompt = BiometricPrompt(this, executor, object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                val correo = CredencialesManager.obtenerCorreo(this@LoginActivity)
-                val contrasena = CredencialesManager.obtenerContrasena(this@LoginActivity)
 
-                if (correo != null && contrasena != null) {
-                    lifecycleScope.launch {
-                        try {
-                            SupabaseClient.client.auth.signInWith(provider = Email) {
-                                email = correo
-                                password = contrasena
+        val biometricPrompt = BiometricPrompt(this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+
+                    val correo = CredencialesManagere.obtenerCorreo(this@LoginActivity)
+                    val contrasena = CredencialesManagere.obtenerContrasena(this@LoginActivity)
+
+                    if (correo != null && contrasena != null) {
+                        lifecycleScope.launch {
+                            try {
+                                SupabaseClient.client.auth.signInWith(io.github.jan.supabase.auth.providers.builtin.Email) {
+                                    email = correo
+                                    password = contrasena
+                                }
+
+                                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                finishAffinity()
+
+                            } catch (e: Exception) {
+                                Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
-                            startActivity(Intent(packageContext = this@LoginActivity, cls = MainActivity::class.java))
-                            finishAffinity()
-
-
                         }
-                    }
-                } else {
-                    // No hay credencial - No logueado previamente - limpiar-ocultarla
-                    Toast.makeText(this@LoginActivity, "Inicia sesion con tu email", Toast.LENGTH_SHORT).show()
-                    CredencialesManager.limpiarCredenciales(this@LoginActivity)
-                }
-
-
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    if(errorCode != BiometricPrompt.ERROR_USER_CANCELED &&
-                        errorCode != BiometricPrompt.ERROR_NEGATIVE_BUTTON){
-                        Toast.makeText(context = this@LoginActivity, text = "Error biometrice: $errString", duration = Toast.LEN
                     }
                 }
 
                 override fun onAuthenticationFailed() {
-                    Toast.makeText(context = this@LoginActivity, text = "Autenticación fallida", duration = Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Huella incorrecta", Toast.LENGTH_SHORT).show()
                 }
+            })
 
-                }
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Inicio con huella")
+            .setSubtitle("Coloca tu dedo")
+            .setNegativeButtonText("Cancelar")
+            .build()
 
-
-
-
-            }
-        })
+        biometricPrompt.authenticate(promptInfo)
     }
-    }
+}

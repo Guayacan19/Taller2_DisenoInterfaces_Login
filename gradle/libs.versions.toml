@@ -19,7 +19,7 @@ navigationFragmentKtx = "2.6.0"
 navigationUiKtx = "2.6.0"
 biometric = "1.1.0"
 credentialManager = "1.6.0"
-googleid = "1.6.0"
+googleid = "1.1.0"
 
 
 [libraries]
